@@ -2,27 +2,19 @@ package coding4world.model;
 
 public class Employee {
 
-    private String name;
-    private JobTitle title;
+    private final JobTitle title;
+    private final Double salary;
 
-    public Employee(String name, JobTitle title) {
-        this.name = name;
+    public Employee(JobTitle title, Double salary) {
         this.title = title;
+        this.salary = salary;
+    }
+
+    public Double getSalary() {
+        return salary;
     }
 
     public JobTitle getTitle() {
         return title;
-    }
-
-    public void setTitle(JobTitle title) {
-        this.title = title;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

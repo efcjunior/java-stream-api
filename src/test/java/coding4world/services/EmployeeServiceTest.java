@@ -5,20 +5,21 @@ import coding4world.model.JobTitle;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 import static coding4world.model.JobTitle.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmployeeServiceTest {
 
-    private Employee employee1 = new Employee(randomAlphabetic(8), DATA_ANALYST);
-    private Employee employee2 = new Employee(randomAlphabetic(8), DATA_ANALYST);
-    private Employee employee3 = new Employee(randomAlphabetic(8), JAVA_ENGINEER);
-    private Employee employee4 = new Employee(randomAlphabetic(8), JAVA_ENGINEER);
+    private final Employee employee1 = new Employee(DATA_ANALYST, 1000.00);
+    private final Employee employee2 = new Employee(DATA_ANALYST, 3000.00);
+    private final Employee employee3 = new Employee(JAVA_ENGINEER, 4000.00);
+    private final Employee employee4 = new Employee(JAVA_ENGINEER, 2000.00);
     private EmployeeService employeeService;
 
     @Before
@@ -33,7 +34,19 @@ public class EmployeeServiceTest {
         Map<JobTitle, List<Employee>> groupByJobTitle = employeeService.groupByJobTitle();
 
         //then
-        assertThat(groupByJobTitle.get(DATA_ANALYST)).isEqualTo(newArrayList(employee1, employee2));
-        assertThat(groupByJobTitle.get(JAVA_ENGINEER)).isEqualTo(newArrayList(employee3, employee4));
+        HashMap<JobTitle,List<Employee>> assertMap = newHashMap();
+        assertMap.put(DATA_ANALYST, newArrayList(employee1, employee2));
+        assertMap.put(JAVA_ENGINEER, newArrayList(employee3, employee4));
+
+        assertMap.forEach((jobTitle, employees) -> assertThat(groupByJobTitle.get(jobTitle)).isEqualTo(employees));
+    }
+
+    @Test
+    public void calculateAverage() {
+        //when
+       double calculateAverage = employeeService.calculateAverage();
+
+        //then
+        assertThat(calculateAverage).isEqualTo(2500);
     }
 }
