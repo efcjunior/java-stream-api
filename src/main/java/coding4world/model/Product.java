@@ -17,5 +17,13 @@ public class Product {
         this.category = category;
         this.price = price;
     }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
     public void addToOrders(Order newOrder) {orders.add(newOrder);}
 }

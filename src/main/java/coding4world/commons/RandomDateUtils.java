@@ -19,4 +19,8 @@ public class RandomDateUtils {
         LocalDate end = LocalDate.now();
         return between(start, end);
     }
+
+    public static LocalDate getFutureDateFrom(LocalDate currentDate) {
+        return currentDate.plusDays(ThreadLocalRandom.current().nextLong(1,61));
+    }
 }

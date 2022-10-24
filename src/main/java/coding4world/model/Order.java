@@ -21,6 +21,10 @@ public class Order {
         this.customer = customer;
     }
 
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
+
     public void addToProducts(Product newProduct) {products.add(newProduct);}
 
 }
