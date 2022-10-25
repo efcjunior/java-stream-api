@@ -27,4 +27,7 @@ public class Order {
 
     public void addToProducts(Product newProduct) {products.add(newProduct);}
 
+    public Set<Product> getProducts() {
+        return products;
+    }
 }

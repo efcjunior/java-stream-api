@@ -59,6 +59,18 @@ public class ProductServiceTest {
             BOOKS,
             200.00);
 
+    private final Product product8 = new Product(
+            Long.valueOf(randomNumeric(5)),
+            randomAlphabetic(10),
+            BABY,
+            350.00);
+
+    private final Product product9 = new Product(
+            Long.valueOf(randomNumeric(5)),
+            randomAlphabetic(10),
+            BABY,
+            400.50);
+
     private final Customer customer1 =
             new Customer(
                     Long.valueOf(randomNumeric(5)),
@@ -86,33 +98,48 @@ public class ProductServiceTest {
             order2Date,
             getFutureDateFrom(order1Date),
             randomAlphabetic(4), customer2);
+
+    private final LocalDate order3Date = getDateUntilNow();
+    private final Order order3 = new Order(
+            Long.valueOf(randomNumeric(5)),
+            order3Date,
+            getFutureDateFrom(order3Date),
+            randomAlphabetic(4), customer2);
     private ProductService productService;
     @Before
     public void setUp() {
         order1.addToProducts(product1);;
         order1.addToProducts(product2);
-        order2.addToProducts(product2);
         order1.addToProducts(product3);
         order2.addToProducts(product4);
         order2.addToProducts(product5);
         order2.addToProducts(product6);
         order1.addToProducts(product7);
+        order1.addToProducts(product8);
+        order3.addToProducts(product9);
 
         product1.addToOrders(order1);
         product2.addToOrders(order1);
-        product2.addToOrders(order2);
         product3.addToOrders(order1);
         product4.addToOrders(order2);
         product5.addToOrders(order2);
         product6.addToOrders(order2);
         product7.addToOrders(order1);
+        product8.addToOrders(order1);
+        product9.addToOrders(order3);
 
         productService = new ProductService(newHashSet(product1, product2, product3, product4,
-                product5, product6, product7));
+                product5, product6, product7), newHashSet(order1, order2, order3));
     }
 
     @Test
     public void findByCategoryAndGreaterThanPrice(){
-        assertThat(productService.findByCategoryAndGreaterThanPrice(BOOKS, 100).size()).isEqualTo(3);
+        assertThat(productService.findProductByCategoryAndGreaterThanPrice(BOOKS, 100)
+                .size()).isEqualTo(3);
+    }
+
+    @Test
+    public void findProductFromOrderByCategory() {
+        assertThat(productService.findProductFromOrderByCategory(BABY).size()).isEqualTo(3);
     }
 }
