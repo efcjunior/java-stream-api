@@ -19,14 +19,23 @@ public class ProductService {
         this.orders = orders;
     }
 
-    public Set<Product> findProductByCategoryAndGreaterThanPrice(Category category, double price) {
+    public Set<Product> findAllProductsByCategoryAndGreaterThanPrice(Category category, double price) {
         return products.stream()
                 .filter(product -> product.getCategory().equals(category))
                 .filter(product -> product.getPrice() > price)
                 .collect(Collectors.toSet());
     }
 
-    public Set<Order> findProductFromOrderByCategory(Category category) {
+    public Set<Product> findAllProductsByCategoryAndApplyDiscount(Category category, double discount) {
+        return products.stream()
+                .filter(product -> product.getCategory().equals(category))
+                .map(product -> product.getProductWithDiscount(discount) )
+                .collect(Collectors.toSet());
+    }
+
+
+    /**TODO Move this method to OrderService class*/
+    public Set<Order> findAllProductsFromOrderByCategory(Category category) {
         return orders.stream().filter(
                 order -> order.getProducts()
                         .stream()

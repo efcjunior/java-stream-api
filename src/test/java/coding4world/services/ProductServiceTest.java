@@ -1,6 +1,7 @@
 package coding4world.services;
 
 import coding4world.model.Customer;
+import coding4world.model.Employee;
 import coding4world.model.Order;
 import coding4world.model.Product;
 import org.junit.Before;
@@ -134,12 +135,18 @@ public class ProductServiceTest {
 
     @Test
     public void findByCategoryAndGreaterThanPrice(){
-        assertThat(productService.findProductByCategoryAndGreaterThanPrice(BOOKS, 100)
+        assertThat(productService.findAllProductsByCategoryAndGreaterThanPrice(BOOKS, 100)
                 .size()).isEqualTo(3);
     }
 
     @Test
+    public void findAllProductsByCategoryAndApplyDiscount() {
+        assertThat(productService.findAllProductsByCategoryAndApplyDiscount(TOYS, 0.9)
+                .stream().mapToDouble(Product::getPrice).sum()).isEqualTo(180.00);
+    }
+
+    @Test
     public void findProductFromOrderByCategory() {
-        assertThat(productService.findProductFromOrderByCategory(BABY).size()).isEqualTo(3);
+        assertThat(productService.findAllProductsFromOrderByCategory(BABY).size()).isEqualTo(3);
     }
 }
