@@ -25,6 +25,10 @@ public class Order {
         return orderDate;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
     public void addToProducts(Product newProduct) {products.add(newProduct);}
 
     public Set<Product> getProducts() {

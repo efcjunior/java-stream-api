@@ -1,13 +1,12 @@
 package coding4world.services;
 
-import coding4world.model.Customer;
-import coding4world.model.Employee;
-import coding4world.model.Order;
-import coding4world.model.Product;
+import coding4world.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.Set;
+
 import static coding4world.commons.RandomDateUtils.getDateUntilNow;
 import static coding4world.commons.RandomDateUtils.getFutureDateFrom;
 import static coding4world.model.Category.*;
@@ -76,9 +75,9 @@ public class ProductServiceTest {
             new Customer(
                     Long.valueOf(randomNumeric(5)),
                     randomAlphabetic(15),
-                    Integer.valueOf(randomNumeric(2)));
+                    1);
 
-    private final LocalDate order1Date = getDateUntilNow();
+    private final LocalDate order1Date = LocalDate.of(2022,10,27);
     private final Order order1 = new Order(
             Long.valueOf(randomNumeric(5)),
             order1Date,
@@ -91,16 +90,16 @@ public class ProductServiceTest {
             new Customer(
                     Long.valueOf(randomNumeric(5)),
                     randomAlphabetic(15),
-                    Integer.valueOf(randomNumeric(2)));
+                    2);
 
-    private final LocalDate order2Date = getDateUntilNow();
+    private final LocalDate order2Date = LocalDate.of(2022,9,1);
     private final Order order2 = new Order(
             Long.valueOf(randomNumeric(5)),
             order2Date,
             getFutureDateFrom(order1Date),
             randomAlphabetic(4), customer2);
 
-    private final LocalDate order3Date = getDateUntilNow();
+    private final LocalDate order3Date = LocalDate.of(2022,9,1);
     private final Order order3 = new Order(
             Long.valueOf(randomNumeric(5)),
             order3Date,
@@ -148,5 +147,12 @@ public class ProductServiceTest {
     @Test
     public void findProductFromOrderByCategory() {
         assertThat(productService.findAllProductsFromOrderByCategory(BABY).size()).isEqualTo(3);
+    }
+
+    @Test
+    public void findAllProductsOrderedByCustomerTieInPeriod() {
+        assertThat(productService.findAllProductsOrderedByCustomerTieInPeriod(2,
+                new DatePeriod(LocalDate.of(2022,8,30),
+                        LocalDate.of(2022,9,2))).size()).isEqualTo(4);
     }
 }

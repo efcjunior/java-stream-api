@@ -1,6 +1,7 @@
 package coding4world.services;
 
 import coding4world.model.Category;
+import coding4world.model.DatePeriod;
 import coding4world.model.Order;
 import coding4world.model.Product;
 
@@ -41,5 +42,14 @@ public class ProductService {
                         .stream()
                         .anyMatch(product -> product.getCategory().equals(category))
                 ).collect(Collectors.toSet());
+    }
+
+    public Set<Product> findAllProductsOrderedByCustomerTieInPeriod(Integer customerTie, DatePeriod period) {
+        return orders.stream()
+                .filter(order -> order.getCustomer().getTier().equals(customerTie))
+                .filter(order -> order.getOrderDate().compareTo(period.getStartDate()) >= 0)
+                .filter(order -> order.getOrderDate().compareTo(period.getEndDate()) <= 0)
+                .flatMap(order -> order.getProducts().stream())
+                .collect(Collectors.toSet());
     }
 }
