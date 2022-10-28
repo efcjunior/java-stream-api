@@ -77,7 +77,7 @@ public class ProductServiceTest {
                     randomAlphabetic(15),
                     1);
 
-    private final LocalDate order1Date = LocalDate.of(2022,10,27);
+    private final LocalDate order1Date = LocalDate.of(2022,8,27);
     private final Order order1 = new Order(
             Long.valueOf(randomNumeric(5)),
             order1Date,
@@ -99,7 +99,7 @@ public class ProductServiceTest {
             getFutureDateFrom(order1Date),
             randomAlphabetic(4), customer2);
 
-    private final LocalDate order3Date = LocalDate.of(2022,9,1);
+    private final LocalDate order3Date = LocalDate.of(2022,10,1);
     private final Order order3 = new Order(
             Long.valueOf(randomNumeric(5)),
             order3Date,
@@ -154,5 +154,15 @@ public class ProductServiceTest {
         assertThat(productService.findAllProductsOrderedByCustomerTieInPeriod(2,
                 new DatePeriod(LocalDate.of(2022,8,30),
                         LocalDate.of(2022,9,2))).size()).isEqualTo(4);
+    }
+
+    @Test
+    public void getProductCheapestByCategory() {
+        assertThat(productService.getProductCheapestByCategory(BOOKS).orElseThrow()).isEqualTo(product6);
+    }
+
+    @Test
+    public void getMostRecentOrders() {
+        assertThat(productService.getMostRecentOrders(2)).isEqualTo(newHashSet(order3, order2));
     }
 }

@@ -5,10 +5,7 @@ import coding4world.model.DatePeriod;
 import coding4world.model.Order;
 import coding4world.model.Product;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProductService {
@@ -34,6 +31,12 @@ public class ProductService {
                 .collect(Collectors.toSet());
     }
 
+    public Optional<Product> getProductCheapestByCategory(Category category){
+        return products.stream()
+                .filter(product -> product.getCategory().equals(category))
+                .min(Comparator.comparing(Product::getPrice));
+    }
+
 
     /**TODO Move this method to OrderService class*/
     public Set<Order> findAllProductsFromOrderByCategory(Category category) {
@@ -42,6 +45,14 @@ public class ProductService {
                         .stream()
                         .anyMatch(product -> product.getCategory().equals(category))
                 ).collect(Collectors.toSet());
+    }
+
+    public Set<Order> getMostRecentOrders(int limit) {
+        return orders
+                .stream()
+                .sorted(Comparator.comparing(Order::getOrderDate).reversed())
+                .limit(limit)
+                .collect(Collectors.toSet());
     }
 
     public Set<Product> findAllProductsOrderedByCustomerTieInPeriod(Integer customerTie, DatePeriod period) {

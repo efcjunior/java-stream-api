@@ -1,6 +1,7 @@
 package coding4world.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 import com.google.common.collect.Sets;
 public class Order {
@@ -33,5 +34,18 @@ public class Order {
 
     public Set<Product> getProducts() {
         return products;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id.equals(order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
