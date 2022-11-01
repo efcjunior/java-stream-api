@@ -165,4 +165,10 @@ public class ProductServiceTest {
     public void getMostRecentOrders() {
         assertThat(productService.getMostRecentOrders(2)).isEqualTo(newHashSet(order3, order2));
     }
+
+    @Test
+    public void getProductsFromLoggedOrdersByDate() {
+        assertThat(productService.getProductsFromLoggedOrdersByDate(LocalDate.of(2022,10,1)))
+                .isEqualTo(order3.getProducts());
+    }
 }

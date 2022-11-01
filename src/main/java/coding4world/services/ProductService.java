@@ -5,6 +5,7 @@ import coding4world.model.DatePeriod;
 import coding4world.model.Order;
 import coding4world.model.Product;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,4 +64,14 @@ public class ProductService {
                 .flatMap(order -> order.getProducts().stream())
                 .collect(Collectors.toSet());
     }
+
+    public Set<Product> getProductsFromLoggedOrdersByDate(LocalDate orderedDate) {
+        return orders
+                .stream()
+                .filter(order -> order.getOrderDate().isEqual(orderedDate))
+                .peek(order -> System.out.println(order.toString()))
+                .flatMap(order -> order.getProducts().stream())
+                .collect(Collectors.toSet());
+    }
+
 }

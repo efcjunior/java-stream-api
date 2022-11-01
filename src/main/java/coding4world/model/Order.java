@@ -22,6 +22,10 @@ public class Order {
         this.customer = customer;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public LocalDate getOrderDate() {
         return orderDate;
     }
@@ -47,5 +51,11 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + this.getId()
+                + "\nOrder Date: " + this.getOrderDate();
     }
 }
