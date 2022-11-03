@@ -74,4 +74,33 @@ public class ProductService {
                 .collect(Collectors.toSet());
     }
 
+    public double getSumUpOrdersByDate(LocalDate orderedDate){
+        return orders
+                .stream()
+                .filter(order -> order.getOrderDate().compareTo(orderedDate) >= 0)
+                .filter(order -> order.getOrderDate().compareTo(orderedDate) <= 0)
+                .flatMap(order -> order.getProducts().stream())
+                .mapToDouble(Product::getPrice)
+                .sum();
+    }
+
+    public double getAvgOrdersByDate(LocalDate orderedDate) {
+        return orders
+                .stream()
+                .filter(order -> order.getOrderDate().compareTo(orderedDate) >= 0)
+                .filter(order -> order.getOrderDate().compareTo(orderedDate) <= 0)
+                .flatMap(order -> order.getProducts().stream())
+                .mapToDouble(Product::getPrice)
+                .average()
+                .getAsDouble();
+    }
+
+    public DoubleSummaryStatistics getSummaryStatisticsByCategory(Category category) {
+        return products
+                .stream()
+                .filter(product -> product.getCategory().equals(category))
+                .mapToDouble(Product::getPrice)
+                .summaryStatistics();
+    }
+
 }

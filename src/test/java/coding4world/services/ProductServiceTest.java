@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.DoubleSummaryStatistics;
 import java.util.Set;
 
 import static coding4world.commons.RandomDateUtils.getDateUntilNow;
@@ -171,4 +172,25 @@ public class ProductServiceTest {
         assertThat(productService.getProductsFromLoggedOrdersByDate(LocalDate.of(2022,10,1)))
                 .isEqualTo(order3.getProducts());
     }
+
+    @Test
+    public void getSumUpOrdersByDate() {
+        assertThat(productService.getSumUpOrdersByDate(order1Date)).isEqualTo(901.00);
+    }
+
+    @Test
+    public void getAvgOrdersByDate() {
+        assertThat(productService.getAvgOrdersByDate(order1Date)).isEqualTo(180.20);
+    }
+
+    @Test
+    public void getSummaryStatisticsByCategory() {
+        DoubleSummaryStatistics statistics = productService.getSummaryStatisticsByCategory(BOOKS);
+        assertThat(statistics.getCount()).isEqualTo(5);
+        assertThat(statistics.getAverage()).isEqualTo(120.20);
+        assertThat(statistics.getMax()).isEqualTo(200.00);
+        assertThat(statistics.getMin()).isEqualTo(50.00);
+        assertThat(statistics.getSum()).isEqualTo(601);
+    }
+
 }
