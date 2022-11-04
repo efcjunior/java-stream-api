@@ -1,12 +1,10 @@
 package coding4world.services;
 
-import coding4world.model.Category;
-import coding4world.model.DatePeriod;
-import coding4world.model.Order;
-import coding4world.model.Product;
+import coding4world.model.*;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ProductService {
@@ -102,5 +100,48 @@ public class ProductService {
                 .mapToDouble(Product::getPrice)
                 .summaryStatistics();
     }
+
+    public Map<Long, Integer> getMapOrderProductCount(){
+        return orders
+                .stream()
+                .collect(
+                        Collectors.toMap(order -> order.getId(), order -> order.getProducts().size())
+                );
+    }
+
+    public Map<Customer, List<Order>> getAllOrdersGroupedByCustomer(){
+        return orders
+                .stream()
+                .collect(Collectors.groupingBy(Order::getCustomer));
+    }
+
+    public Map<Order, Double> getAllOrderProductSum() {
+        return orders
+                .stream()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        order -> order.getProducts().stream().mapToDouble(Product::getPrice).sum()
+                ));
+    }
+
+
+    public Map<Category, List<String>> getAllProductNameByCategory() {
+        return products
+                .stream()
+                .collect(
+                        Collectors.groupingBy(Product::getCategory,
+                                Collectors.mapping(Product::getName, Collectors.toList()))
+                );
+    }
+
+    public Map<Category, Optional<Product>> getAllProductMostExpensiveByCategory() {
+        return products
+                .stream()
+                .collect(
+                        Collectors.groupingBy(Product::getCategory,
+                                Collectors.maxBy(Comparator.comparing(Product::getPrice)))
+                );
+    }
+
 
 }

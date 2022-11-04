@@ -19,6 +19,10 @@ public class Product {
         this.price = price;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public Category getCategory() {
         return category;
     }

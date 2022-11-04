@@ -5,13 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.DoubleSummaryStatistics;
-import java.util.Set;
+import java.util.*;
 
 import static coding4world.commons.RandomDateUtils.getDateUntilNow;
 import static coding4world.commons.RandomDateUtils.getFutureDateFrom;
 import static coding4world.model.Category.*;
 import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.apache.commons.lang3.RandomStringUtils.*;
@@ -130,7 +130,7 @@ public class ProductServiceTest {
         product9.addToOrders(order3);
 
         productService = new ProductService(newHashSet(product1, product2, product3, product4,
-                product5, product6, product7), newHashSet(order1, order2, order3));
+                product5, product6, product7, product8, product9), newHashSet(order1, order2, order3));
     }
 
     @Test
@@ -154,7 +154,7 @@ public class ProductServiceTest {
     public void findAllProductsOrderedByCustomerTieInPeriod() {
         assertThat(productService.findAllProductsOrderedByCustomerTieInPeriod(2,
                 new DatePeriod(LocalDate.of(2022,8,30),
-                        LocalDate.of(2022,9,2))).size()).isEqualTo(4);
+                        LocalDate.of(2022,9,30))).size()).isEqualTo(3);
     }
 
     @Test
@@ -192,5 +192,43 @@ public class ProductServiceTest {
         assertThat(statistics.getMin()).isEqualTo(50.00);
         assertThat(statistics.getSum()).isEqualTo(601);
     }
+
+    @Test
+    public void getMapOrderProductCount(){
+        Map<Long, Integer> mapOrderProductCount = productService.getMapOrderProductCount();
+        assertThat(mapOrderProductCount.get(order1.getId())).isEqualTo(order1.getProducts().size());
+    }
+
+    @Test
+    public void getAllOrdersGroupedByCustomer() {
+        assertThat(productService.getAllOrdersGroupedByCustomer().get(customer1).size()).isEqualTo(1);
+        assertThat(productService.getAllOrdersGroupedByCustomer().get(customer2).size()).isEqualTo(2);
+    }
+
+
+    @Test
+    public void getAllOrderProductSum() {
+        assertThat(productService.getAllOrderProductSum().get(order1)).isEqualTo(901);
+    }
+
+    @Test
+    public void getAllProductNameByCategory() {
+        List<String> productNamesTest = newArrayList(
+                    product1.getName(), product2.getName(), product3.getName(), product6.getName(), product7.getName());
+        Collections.sort(productNamesTest);
+
+        List<String> productNames = productService.getAllProductNameByCategory().get(BOOKS);
+        Collections.sort(productNames);
+
+        assertThat(productNames).isEqualTo(productNamesTest);
+    }
+
+    @Test
+    public void getAllProductMostExpensiveByCategory() {
+        assertThat(productService.getAllProductMostExpensiveByCategory().get(BOOKS).orElseThrow()).isEqualTo(product7);
+    }
+
+
+
 
 }
